@@ -1,0 +1,38 @@
+import { test, expect } from '@playwright/test';
+import { login } from './helpers';
+
+test('P06A : espace service, création de tâche et priorités persistées', async ({ page }, info) => {
+  test.skip(!process.env.P02_QA_DATABASE, 'Base isolée requise.');
+  await login(page);
+  await page.goto('/espace');
+  await expect(page.getByRole('heading', { name: 'Commercial et marketing', exact: true })).toBeVisible();
+  await page.goto('/taches?vue=kanban');
+  await page.getByRole('button', { name: 'Nouvelle tâche', exact: true }).click();
+  const dialog = page.getByRole('dialog');
+  const title = 'TEST P06 ' + Date.now();
+  await dialog.getByLabel(/^Intitulé/).fill(title);
+  await dialog.getByLabel('Urgent', { exact: true }).check();
+  await dialog.getByLabel('Important', { exact: true }).check();
+  await dialog.getByRole('button', { name: 'Enregistrer', exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  await page.getByRole('tab', { name: 'Matrice des priorités', exact: true }).click();
+  const card = page.getByRole('article').filter({ hasText: title });
+  await expect(card).toBeVisible();
+  await card.getByLabel('Requalifier ' + title, { exact: true }).selectOption('planifier');
+  await expect(card.getByLabel('Requalifier ' + title, { exact: true })).toHaveValue('planifier');
+  await page.reload();
+  await expect(page.getByRole('article').filter({ hasText: title }).getByLabel('Requalifier ' + title, { exact: true })).toHaveValue('planifier');
+  await page.getByRole('article').filter({ hasText: title }).click();
+  const taskDialog = page.getByRole('dialog');
+  await taskDialog.getByLabel('Statut', { exact: true }).selectOption('termine');
+  await taskDialog.getByRole('button', { name: 'Enregistrer', exact: true }).click();
+  await expect(taskDialog).not.toBeVisible();
+  await page.reload();
+  await page.getByRole('article').filter({ hasText: title }).click();
+  await expect(page.getByRole('dialog').getByLabel('Statut', { exact: true })).toHaveValue('termine');
+  await page.keyboard.press('Escape');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect.poll(async()=>{const box=await page.locator('.sidebar').boundingBox();return box?box.x+box.width:0;}).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: info.outputPath('matrice-mobile.png'), fullPage: true });
+});

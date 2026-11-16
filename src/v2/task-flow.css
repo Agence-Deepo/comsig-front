@@ -1,0 +1,463 @@
+/* Frise chronologique « Planification » reproduite depuis docs/crm-comsig-demo.html.
+   Les valeurs (clip-path des chevrons, hauteurs, rayons, dégradés) sont reprises telles quelles. */
+
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.flow-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.flow-inner {
+  min-width: 760px;
+  position: relative;
+  padding-top: 26px;
+}
+.flow-axis {
+  position: relative;
+  height: 18px;
+  border-bottom: 1px solid var(--chart-grid, var(--border));
+  margin-bottom: 14px;
+}
+.flow-axis span {
+  position: absolute;
+  transform: translate(-50%);
+  font-size: 10.5px;
+  color: var(--text-3, #8c95a3);
+  white-space: nowrap;
+  bottom: 3px;
+}
+.flow-axis span::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  height: 6px;
+  width: 1px;
+  background: var(--chart-axis, var(--border));
+}
+.flow-today {
+  position: absolute;
+  top: -22px;
+  bottom: -18px;
+  width: 2px;
+  background: #b87333;
+  z-index: 3;
+  pointer-events: none;
+}
+.flow-today b {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  font-size: 10px;
+  font-weight: 620;
+  color: #b87333;
+  white-space: nowrap;
+  font-style: normal;
+}
+.flow-track {
+  display: flex;
+  align-items: center;
+  height: 56px;
+}
+/* Avec de nombreuses tâches, une piste surchargée reste lisible si les segments
+   partagent la largeur proportionnellement à leur durée. */
+.flow-seg-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+}
+.flow-seg-row .flow-step {
+  min-width: 30px;
+}
+.flow-seg {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 34px;
+}
+.flow-step {
+  flex: 1;
+  height: 44px;
+  min-width: 30px;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  background: var(--c);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 22px 0 20px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 620;
+  text-align: left;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%);
+  transition:
+    transform 0.16s ease,
+    filter 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.flow-step.first {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  padding-left: 10px;
+  border-radius: 8px 0 0 8px;
+}
+.flow-step:hover,
+.flow-step.hot,
+.flow-step:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.08) saturate(1.1);
+  z-index: 2;
+  outline: none;
+}
+.flow-step.st-termine {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--c) 0 10px,
+    color-mix(in srgb, var(--c) 82%, #fff) 10px 20px
+  );
+}
+.flow-step.st-a_faire {
+  background: color-mix(in srgb, var(--c) 78%, #fff);
+}
+.flow-step.late {
+  box-shadow: inset 0 -4px 0 #d9443a;
+}
+.flow-num {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 25%);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+.flow-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 25%);
+}
+.flow-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.flow-legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background 0.12s;
+}
+.flow-legend li.hot {
+  background: var(--surface-hover, var(--surface-sunken));
+}
+.flow-legend .flow-ic svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-3, #8c95a3);
+}
+.flow-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 620;
+  flex: none;
+}
+.flow-legend .link-btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.flow-legend .spacer {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.flow-legend .status {
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+.flow-legend .status.late {
+  color: #d9443a;
+  font-weight: 600;
+}
+
+/* Matrice des risques : styles repris de docs/crm-comsig-demo.html.
+   Couleurs de niveau : critique #e04b3f, élevé #f08c2e, modéré #f2c94c, faible #4cbf86. */
+.task-demo {
+  --lvl-critique: #e04b3f;
+  --lvl-eleve: #f08c2e;
+  --lvl-modere: #f2c94c;
+  --lvl-faible: #4cbf86;
+}
+.task-demo .risk-matrix {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 6px;
+  max-width: 760px;
+}
+.task-demo .risk-axis-y {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.75rem;
+  color: var(--text-3, #8c95a3);
+  text-align: center;
+}
+.task-demo .risk-axis-x {
+  grid-column: 2;
+  font-size: 0.75rem;
+  color: var(--text-3, #8c95a3);
+  text-align: center;
+}
+.task-demo .risk-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+.task-demo .risk-cell {
+  min-height: 58px;
+  border-radius: 6px;
+  padding: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-content: flex-start;
+  position: relative;
+  border: 2px solid var(--surface);
+}
+.task-demo .risk-score {
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  font-size: 10px;
+  opacity: 0.65;
+  font-weight: 620;
+  color: #1b1f27;
+}
+.task-demo .risk-cell.lvl-critique,
+.task-demo .chip.lvl-critique {
+  background: color-mix(in srgb, var(--lvl-critique) 75%, var(--surface));
+}
+.task-demo .risk-cell.lvl-eleve,
+.task-demo .chip.lvl-eleve {
+  background: color-mix(in srgb, var(--lvl-eleve) 60%, var(--surface));
+}
+.task-demo .risk-cell.lvl-modere,
+.task-demo .chip.lvl-modere {
+  background: color-mix(in srgb, var(--lvl-modere) 55%, var(--surface));
+}
+.task-demo .risk-cell.lvl-faible,
+.task-demo .chip.lvl-faible {
+  background: color-mix(in srgb, var(--lvl-faible) 45%, var(--surface));
+}
+.task-demo .risk-pill {
+  border: 0;
+  background: rgb(255 255 255 / 90%);
+  color: #1b1f27;
+  font-size: 10px;
+  font-weight: 620;
+  border-radius: 999px;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+.task-demo .risk-pill:focus-visible {
+  outline: 2px solid var(--primary);
+}
+.task-demo .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.task-demo .chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.75rem;
+  color: var(--text-2, #5b6577);
+}
+.task-demo .chip.lvl-critique,
+.task-demo .chip.lvl-eleve,
+.task-demo .chip.lvl-modere,
+.task-demo .chip.lvl-faible {
+  color: #1b1f27;
+  border-color: transparent;
+}
+.task-demo .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 40px 24px;
+  color: var(--text-2, #5b6577);
+}
+.task-demo .empty-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-sunken);
+  color: var(--text-3, #8c95a3);
+}
+.task-demo .empty-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.task-demo .empty h3 {
+  color: var(--text);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Gestion du temps : styles de la démonstration.
+   Barre empilée (12 px, gouttière de 2 px, rayon pastille) et pastilles de légende. */
+.task-demo .stacked-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface-sunken);
+  min-width: 140px;
+  gap: 2px;
+}
+.task-demo .stacked-bar span {
+  display: block;
+  height: 100%;
+}
+.task-demo .seg-faire {
+  background: var(--q-faire);
+}
+.task-demo .seg-planifier {
+  background: var(--q-planifier);
+}
+.task-demo .seg-deleguer {
+  background: var(--q-deleguer);
+}
+.task-demo .seg-eliminer {
+  background: var(--q-eliminer);
+}
+.task-demo .seg-ot {
+  background: var(--q-ot);
+}
+.task-demo .hbar-track {
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+.task-demo .hbar-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 0 4px 4px 0;
+  background: var(--series-1, var(--primary));
+}
+/* La barre de répartition est un bouton : elle ouvre le détail chiffré au clic
+   et se comporte comme un élément actionnable au clavier. */
+.task-demo .time-bar-button {
+  border: 0;
+  background: none;
+  padding: 2px;
+  margin: -2px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.task-demo .time-bar-button:hover .stacked-bar {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+.task-demo .time-bar-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.task-demo .time-actions {
+  margin-top: 12px;
+  align-items: center;
+  gap: 10px;
+}
+.task-demo .time-legend .chip {
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+}
+.task-demo .time-legend .chip:hover {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-2, #5b6577);
+}
+.task-demo .time-legend .sw.seg-faire,
+.task-demo .time-legend .sw.seg-planifier,
+.task-demo .time-legend .sw.seg-deleguer,
+.task-demo .time-legend .sw.seg-eliminer,
+.task-demo .time-legend .sw.seg-ot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 6px;
+  flex: none;
+}
+/* Détail chiffré ouvert depuis la barre. */
+.task-demo .time-detail,
+.time-detail {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0 0;
+  gap: 0;
+}
+.time-detail > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.time-detail > div:last-child {
+  border-bottom: 0;
+}
+.time-detail dt {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-2, #5b6577);
+  font-size: var(--fs-sm);
+}
+.time-detail dd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.time-detail .time-detail-total {
+  border-top: 2px solid var(--border);
+  border-bottom: 0;
+  margin-top: 4px;
+  font-weight: 600;
+}

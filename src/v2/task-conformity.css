@@ -1,0 +1,357 @@
+/* Reproduction fidèle des styles de l'écran « Tâches et matrices » de la démonstration
+   (docs/crm-comsig-demo.html). Les valeurs sont reprises telles quelles : tokens, couleurs
+   de quadrants, rayons, ombres et espacements. Aucun style inventé. */
+
+.task-demo {
+  --q-faire: #d9443a;
+  --q-planifier: #2a78d6;
+  --q-deleguer: #e09a1a;
+  --q-eliminer: #8a909c;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.task-demo .seg {
+  display: inline-flex;
+  background: var(--surface-sunken);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--border);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.task-demo .seg button {
+  border: 0;
+  background: transparent;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 520;
+  color: var(--text-2, #5b6577);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  white-space: nowrap;
+}
+.task-demo .seg button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 8%);
+}
+
+.task-demo .tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+.task-demo .tabs button {
+  border: 0;
+  background: none;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  font-weight: 520;
+  color: var(--text-2, #5b6577);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  flex: none;
+}
+.task-demo .tabs button[aria-selected='true'] {
+  color: var(--text);
+  border-bottom-color: var(--primary);
+}
+.task-demo .tabs button:hover {
+  color: var(--text);
+}
+
+.task-demo .prio-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.prio-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 8px 1px 6px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  background: color-mix(in srgb, var(--prio) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--prio) 45%, transparent);
+  white-space: nowrap;
+  line-height: 1.6;
+}
+.prio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--prio);
+  flex: none;
+}
+
+.task-demo .kanban {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(264px, 1fr);
+  gap: var(--sp-3);
+  overflow-x: auto;
+  padding-bottom: var(--sp-2);
+  align-items: start;
+}
+.task-demo .kanban-col {
+  background: var(--surface-sunken);
+  border-radius: 12px;
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-height: 120px;
+  border: 1px solid var(--border);
+}
+.task-demo .kanban-col.drop {
+  outline: 2px dashed var(--primary);
+  outline-offset: -2px;
+  background: var(--primary-soft);
+}
+.task-demo .kanban-head {
+  padding: 6px 6px 4px;
+}
+.task-demo .kanban-head h3 {
+  font-size: 0.8125rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.task-demo .kanban-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 6%);
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+.task-demo .kanban-card:hover {
+  border-color: var(--border-strong, #c3cbd8);
+  box-shadow: 0 2px 6px rgb(15 23 42 / 10%);
+}
+.task-demo .kanban-card:focus-visible {
+  outline: 2px solid var(--focus, var(--primary));
+}
+.task-demo .kanban-card .title {
+  font-weight: 520;
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.task-demo .kanban-card .meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-3, #8c95a3);
+  align-items: center;
+}
+.task-demo .kanban-empty {
+  padding: var(--sp-3);
+  text-align: center;
+  border: 1px dashed var(--border-strong, #c3cbd8);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: var(--text-3, #8c95a3);
+}
+
+.task-card {
+  border-left: 4px solid var(--q-eliminer);
+}
+.task-card.q-faire {
+  border-left-color: var(--q-faire);
+}
+.task-card.q-planifier {
+  border-left-color: var(--q-planifier);
+}
+.task-card.q-deleguer {
+  border-left-color: var(--q-deleguer);
+}
+
+.task-demo .matrix-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.task-demo .matrix-cell {
+  border-radius: 12px;
+  padding: var(--sp-4);
+  min-height: 220px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.task-demo .matrix-cell header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.task-demo .matrix-cell h3 {
+  font-size: 0.875rem;
+  margin: 0;
+}
+.task-demo .matrix-cell .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 520;
+  white-space: nowrap;
+  border: 1px solid var(--neutral-border, var(--border));
+  background: var(--neutral-soft, var(--surface-sunken));
+  color: var(--neutral, var(--text-2));
+}
+.task-demo .matrix-cell .badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+.task-demo .matrix-cell.tone-danger {
+  background: color-mix(in srgb, var(--q-faire) 9%, var(--surface));
+  border-color: color-mix(in srgb, var(--q-faire) 35%, var(--border));
+}
+.task-demo .matrix-cell.tone-primary {
+  background: color-mix(in srgb, var(--q-planifier) 9%, var(--surface));
+  border-color: color-mix(in srgb, var(--q-planifier) 35%, var(--border));
+}
+.task-demo .matrix-cell.tone-warning {
+  background: color-mix(in srgb, var(--q-deleguer) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--q-deleguer) 35%, var(--border));
+}
+.task-demo .matrix-cell.tone-neutral {
+  background: var(--surface-2, var(--surface-sunken));
+}
+
+.task-demo .risk-matrix {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 6px;
+  max-width: 760px;
+}
+.task-demo .risk-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 620;
+  min-height: 46px;
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+}
+
+.task-demo .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 520;
+  white-space: nowrap;
+  border: 1px solid var(--neutral-border, var(--border));
+  background: var(--neutral-soft, var(--surface-sunken));
+  color: var(--neutral, var(--text-2));
+}
+.task-demo .badge.no-dot::before {
+  display: none;
+}
+.task-demo .badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+.task-demo .badge-primary {
+  background: var(--primary-soft, #eaf1fc);
+  color: var(--primary-ink, var(--primary));
+  border-color: var(--primary-soft, #d7e4f7);
+}
+
+.task-demo .task-plan {
+  display: flex;
+  flex-direction: column;
+}
+.task-demo .task-plan-row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: var(--sp-3);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.task-demo .task-plan-row .day {
+  font-size: 0.75rem;
+  color: var(--text-3, #8c95a3);
+}
+.task-demo .task-plan-row button {
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+@media (max-width: 760px) {
+  .task-demo .matrix-2x2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .task-demo .kanban {
+    grid-auto-columns: minmax(240px, 86vw);
+  }
+  .task-demo .task-plan-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}

@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   COM&SIG — Design system : tokens
+   Une seule source de vérité pour couleurs, typographie, espacements,
+   rayons, ombres et mouvements. Les composants ne codent aucune valeur brute.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  /* Typographie */
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.75rem;    /* 12 */
+  --fs-sm: 0.8125rem;  /* 13 */
+  --fs-md: 0.875rem;   /* 14 : corps */
+  --fs-lg: 1rem;       /* 16 */
+  --fs-xl: 1.25rem;    /* 20 */
+  --fs-2xl: 1.5rem;    /* 24 */
+  --fs-3xl: 1.875rem;  /* 30 : chiffres clés */
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+  --fw-regular: 420;
+  --fw-medium: 520;
+  --fw-semibold: 620;
+  --fw-bold: 700;
+  --tracking-tight: -0.011em;
+  --tracking-caps: 0.06em;
+
+  /* Espacements (base 4 px) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+
+  /* Rayons */
+  --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-pill: 999px;
+
+  /* Surfaces (papier chaud, sobre) */
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface-2: #faf9f6;
+  --surface-sunken: #f0efea;
+  --surface-hover: #f6f5f1;
+  --border: #e5e3dc;
+  --border-strong: #d2cfc5;
+  --overlay: rgba(15, 22, 34, 0.42);
+
+  /* Encre */
+  --text: #151a22;
+  --text-2: #4a5160;
+  --text-3: #6f7581;
+  --text-inverse: #ffffff;
+
+  /* Marque */
+  --brand-ink: #0f1a2b;          /* navigation */
+  --brand-ink-2: #172438;
+  --brand-ink-text: #b8c2d3;
+  --brand-ink-muted: #7d889b;
+  --brand-copper: #c27a34;       /* accent de marque, usage parcimonieux */
+  --brand-copper-soft: #f7ecdf;
+
+  /* Action principale */
+  --primary: #1f56b3;
+  --primary-hover: #194996;
+  --primary-active: #153d7e;
+  --primary-soft: #e9eff9;
+  --primary-soft-2: #d7e3f6;
+  --primary-ink: #173f83;
+  --focus: #2f6fdc;
+
+  /* Statuts sémantiques (toujours accompagnés d'un libellé) */
+  --success: #19724a;  --success-soft: #e4f2ea;  --success-border: #bfe0cd;
+  --warning: #965b00;  --warning-soft: #fcf0d9;  --warning-border: #f0d39b;
+  --danger: #b0302c;   --danger-soft: #fbe8e6;   --danger-border: #f1c4bf;
+  --info: #22599f;     --info-soft: #e7eef8;     --info-border: #c6d7ef;
+  --neutral: #575d6a;  --neutral-soft: #eeede8;  --neutral-border: #dcdad2;
+  --accent: #7a4fb8;   --accent-soft: #f0eafa;   --accent-border: #dccdf2;
+
+  /* Graphiques (palette de référence validée — emplacements 1 à 3) */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100; --series-5: #e87ba4; --series-6: #008300; --series-7: #6250d6; --series-8: #e34948;
+  --chart-grid: #ecebe6;
+  --chart-axis: #9a9ea6;
+  --chart-target: #151a22;
+
+  /* Ombres (légères) */
+  --shadow-xs: 0 1px 1px rgba(16, 24, 40, 0.04);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 1px rgba(16, 24, 40, 0.03);
+  --shadow-md: 0 6px 16px -4px rgba(16, 24, 40, 0.10), 0 2px 4px rgba(16, 24, 40, 0.04);
+  --shadow-lg: 0 18px 40px -12px rgba(16, 24, 40, 0.22);
+
+  /* Gabarits */
+  --sidebar-w: 248px;
+  --topbar-h: 56px;
+  --content-max: 1440px;
+  --panel-w: 440px;
+
+  /* Mouvement */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 120ms;
+  --t-med: 200ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1117; --surface: #141a22; --surface-2: #171e27; --surface-sunken: #10151c; --surface-hover: #1a222d;
+    --border: #252d39; --border-strong: #354050; --overlay: rgba(0, 0, 0, 0.6);
+    --text: #e9ecf1; --text-2: #b0b7c3; --text-3: #8a93a1;
+    --brand-ink: #0a0f17; --brand-ink-2: #121a26; --brand-ink-text: #b8c2d3; --brand-ink-muted: #6f7a8d;
+    --brand-copper: #dc9a58; --brand-copper-soft: #2c2016;
+    --primary: #5b8ff0; --primary-hover: #73a0f3; --primary-active: #8cb1f5; --primary-soft: #18253b; --primary-soft-2: #1f3150; --primary-ink: #a9c4f7; --focus: #7aa5f5;
+    --success: #4cc18a; --success-soft: #11291e; --success-border: #1d4a35;
+    --warning: #e2a440; --warning-soft: #2c2110; --warning-border: #55401c;
+    --danger: #f07a72; --danger-soft: #311616; --danger-border: #5b2a27;
+    --info: #78a9ee; --info-soft: #14233a; --info-border: #24406a;
+    --neutral: #a3aab6; --neutral-soft: #1d232c; --neutral-border: #313a47;
+    --accent: #b394e6; --accent-soft: #241c33; --accent-border: #3f3159;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --chart-grid: #222a35; --chart-axis: #6f7886; --chart-target: #e9ecf1;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-md: 0 8px 20px -6px rgba(0, 0, 0, 0.55); --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1117; --surface: #141a22; --surface-2: #171e27; --surface-sunken: #10151c; --surface-hover: #1a222d;
+  --border: #252d39; --border-strong: #354050; --overlay: rgba(0, 0, 0, 0.6);
+  --text: #e9ecf1; --text-2: #b0b7c3; --text-3: #8a93a1;
+  --brand-ink: #0a0f17; --brand-ink-2: #121a26; --brand-ink-text: #b8c2d3; --brand-ink-muted: #6f7a8d;
+  --brand-copper: #dc9a58; --brand-copper-soft: #2c2016;
+  --primary: #5b8ff0; --primary-hover: #73a0f3; --primary-active: #8cb1f5; --primary-soft: #18253b; --primary-soft-2: #1f3150; --primary-ink: #a9c4f7; --focus: #7aa5f5;
+  --success: #4cc18a; --success-soft: #11291e; --success-border: #1d4a35;
+  --warning: #e2a440; --warning-soft: #2c2110; --warning-border: #55401c;
+  --danger: #f07a72; --danger-soft: #311616; --danger-border: #5b2a27;
+  --info: #78a9ee; --info-soft: #14233a; --info-border: #24406a;
+  --neutral: #a3aab6; --neutral-soft: #1d232c; --neutral-border: #313a47;
+  --accent: #b394e6; --accent-soft: #241c33; --accent-border: #3f3159;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --chart-grid: #222a35; --chart-axis: #6f7886; --chart-target: #e9ecf1;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-md: 0 8px 20px -6px rgba(0, 0, 0, 0.55); --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
+}

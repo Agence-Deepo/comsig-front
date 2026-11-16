@@ -1,0 +1,185 @@
+/* Fenêtre d'édition de tâche : styles repris de docs/crm-comsig-demo.html
+   (modal-root, modal lg, modal-head/body/foot, form-grid, prio-select, cl-box). */
+
+.task-demo ~ .modal-root,
+.modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.modal-root .scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay, rgb(10 16 28 / 55%));
+  z-index: 0;
+}
+.modal-root .modal {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgb(10 16 28 / 28%);
+  border: 1px solid var(--border);
+}
+.modal-root .modal.lg {
+  width: min(820px, 100%);
+}
+.modal-root .modal-head {
+  padding: 20px 20px 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.modal-root .modal-head h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+.modal-root .modal-body {
+  padding: 8px 20px 20px;
+  overflow-y: auto;
+}
+.modal-root .modal-foot {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  background: var(--surface-2, var(--surface-sunken));
+  border-radius: 0 0 12px 12px;
+  flex-wrap: wrap;
+}
+.modal-root .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.modal-root .form-grid .span-2 {
+  grid-column: span 2;
+}
+.modal-root .field-label {
+  font-size: 0.8125rem;
+  font-weight: 520;
+  color: var(--text);
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+.modal-root .field-label .req {
+  color: #d9443a;
+}
+.modal-root .checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+}
+.modal-root .checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+.modal-root .prio-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.modal-root .prio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+.modal-root .prio-option:hover {
+  border-color: var(--prio);
+}
+.modal-root .prio-option:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.modal-root .prio-option.on {
+  background: color-mix(in srgb, var(--prio) 16%, var(--surface));
+  border-color: var(--prio);
+  box-shadow: inset 0 0 0 1px var(--prio);
+}
+.modal-root .prio-option .prio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--prio);
+  flex: none;
+}
+.modal-root .prio-help {
+  margin-top: 2px;
+}
+.modal-root .cl-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+}
+.modal-root .cl-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.modal-root .cl-items li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: 6px;
+}
+.modal-root .cl-items li:hover {
+  background: var(--surface-hover, var(--surface-sunken));
+}
+.modal-root .cl-items li .checkbox {
+  flex: 1;
+}
+.modal-root .cl-items li.done .checkbox span {
+  text-decoration: line-through;
+  color: var(--neutral, #64748b);
+}
+.modal-root .cl-items input[type='checkbox'] {
+  accent-color: #16a34a;
+}
+.modal-root .stack-sm > * + * {
+  margin-top: 6px;
+}
+.modal-root .badge-warning {
+  background: #fdf3c9;
+  color: #92400e;
+  border: 1px solid #f0d98a;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+}
+@media (max-width: 760px) {
+  .modal-root .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .modal-root .form-grid .span-2 {
+    grid-column: auto;
+  }
+}
