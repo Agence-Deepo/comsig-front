@@ -1,7 +1,7 @@
 // Portail des départements au modèle COM&SIG : une tuile par département (ou fonction) ; un clic ouvre l'accès
 // de la tuile (identifiant et mot de passe). Seule l'entrée se fait en tuiles : à l'intérieur, les menus restent listés.
 import { useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Lock } from 'lucide-react';
 
@@ -44,7 +44,8 @@ export default function CrmPortal() {
   useEffect(() => {
     document.title = 'Portail des départements — COM&SIG';
   }, []);
-  if (!loading && me) return <Navigate to="/" replace />;
+  if (loading) return <div className="loading-page"><span className="spinner" aria-label="Chargement" /></div>;
+  if (me) return <AuthenticatedPortal user={me} />;
   const rows = r.data?.rows ?? [];
   return (
     <div className="portal">
@@ -81,4 +82,31 @@ export default function CrmPortal() {
       </div>
     </div>
   );
+}
+
+function AuthenticatedPortal({ user }: { user: NonNullable<ReturnType<typeof useAuth>['user']> }) {
+  const permissions = user.role?.permissions ?? [];
+  const has = (permission: string) => permissions.includes(permission) || permissions.includes(`${permission.split('.')[0]}.*`);
+  const destinations = [
+    { code: 'direction', label: 'Tableau de bord', icon: 'organigramme', to: '/', visible: true },
+    { code: 'commercial', label: 'Espace commercial', icon: 'poignee', to: '/opportunites', visible: has('opportunities.view') },
+    { code: 'activities', label: 'Activités et agenda', icon: 'agenda', to: '/activites', visible: has('activities.view') },
+    { code: 'quotes', label: 'Devis et proformas', icon: 'pieces', to: '/devis', visible: has('quotes.view') },
+    { code: 'admin', label: 'Administration', icon: 'bouclier', to: '/espace-admin', visible: has('admin.view') },
+    { code: 'services', label: 'Palettes des services', icon: 'usine', to: '/services', visible: user.department?.code && user.role?.data_scope !== 'own' },
+    { code: 'company', label: 'Espace entreprise', icon: 'ecran', to: '/espace-entreprise', visible: true },
+  ].filter((item) => item.visible);
+  return <div className="portal"><div className="portal-inner">
+    <PortalHero title="Vos espaces COM&amp;SIG" text={`Connecté en tant que ${user.name}. Choisissez l’espace de travail à ouvrir.`} note="Accès selon votre profil et vos autorisations" />
+    <nav className="ptile-grid" aria-label="Espaces de travail">
+      {destinations.map((item) => <PortalTile key={item.code} tile={{ code: item.code, label: item.label, icon: item.icon }} to={item.to} />)}
+    </nav>
+    <p className="portal-foot"><Link to="/">Retour à mon tableau de bord</Link></p>
+  </div></div>;
+}
+
+/** Choisit l'espace d'arrivée depuis le profil déjà authentifié. */
+export function homeForUser(user: NonNullable<ReturnType<typeof useAuth>['user']>): string {
+  if (user.role?.permissions?.includes('admin.view') || user.role?.permissions?.includes('admin.*')) return '/espace-admin';
+  return '/';
 }

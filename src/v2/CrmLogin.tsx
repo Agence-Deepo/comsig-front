@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { safePath } from '../lib/format';
 import { ArrowLeft, Lock, Mail, ShieldCheck } from 'lucide-react';
-import { usePortalTiles } from './CrmPortal';
+import { homeForUser, usePortalTiles } from './CrmPortal';
 import { PortalTile } from '../components/PortalTile';
 import { HttpError } from './api';
 import { useAuth } from './auth';
@@ -31,7 +31,7 @@ export default function CrmLogin() {
     document.title = department ? `${department.label} — Connexion COM&SIG` : 'Connexion — COM&SIG CRM';
   }, [department?.label]);
   if (loading) return <AuthLoading />;
-  if (!loading && me) return <Navigate to={landing ?? safePath(loc.state?.from)} replace />;
+  if (!loading && me) return <Navigate to={landing ?? (loc.state?.from ? safePath(loc.state.from) : homeForUser(me))} replace />;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ export default function CrmLogin() {
         setCode('');
         return;
       }
-      const to = user.must_change_password ? '/profil' : safePath(loc.state?.from);
+      const to = user.must_change_password ? '/profil' : loc.state?.from ? safePath(loc.state.from) : homeForUser(user);
       setLanding(to);
       nav(to, { replace: true });
     } catch (e) {

@@ -196,6 +196,7 @@ export function CrmLayout() {
         },
         { to: '/espace-entreprise', label: 'Espace entreprise', icon: <Building2 />, show: true },
         { to: '/', label: 'Tableau de bord', icon: <LayoutDashboard />, show: true, end: true },
+        { to: '/portail', label: 'Portail des espaces', icon: <Home />, show: true },
         { to: '/indicateurs', label: 'Indicateurs', icon: <Gauge />, show: true },
         { to: '/reporting', label: 'Reporting', icon: <BarChart3 />, show: can('reporting') },
         {
