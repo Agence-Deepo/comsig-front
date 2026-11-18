@@ -65,6 +65,7 @@ import CommissionPayments from './CommissionPayments';
 import SecurityOverview from './SecurityOverview';
 import SecurityArchives from './SecurityArchives';
 import DirectionReporting from './DirectionReporting';
+import SalesPipeline from './SalesPipeline';
 
 import { AccountingBalance, FneStatus, PaymentReviews } from './ErpPanels';
 import { can } from './types';
@@ -243,7 +244,7 @@ function App() {
               </Permission>
             }
           />
-          <Route path="pipeline-commerciaux" element={<Performance pipeline />} />
+          <Route path="pipeline-commerciaux" element={<Permission permission="opportunities.view"><SalesPipeline /></Permission>} />
           <Route path="espace-entreprise" element={<CompanyWorkspace />} />
           <Route path="protocole-priorites" element={<PriorityProtocol />} />
           <Route path="rh/agents/:id" element={<LegacyAlias from="/rh/agents" to="/effectif" />} />
