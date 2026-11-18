@@ -1,0 +1,43 @@
+.direction-reporting {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.direction-reporting > .page-header {
+  align-items: flex-end;
+}
+
+.report-period-controls,
+.report-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.report-period-controls .field { margin: 0; min-width: 138px; }
+.report-period-controls .field input { min-height: 38px; }
+.report-period-controls .seg { margin-bottom: 1px; }
+
+.report-kpis .kpi { min-height: 128px; border-left: 3px solid #3478ef; }
+.report-kpis .kpi:nth-child(4n + 2) { border-left-color: #16a085; }
+.report-kpis .kpi:nth-child(4n + 3) { border-left-color: #e88710; }
+.report-kpis .kpi:nth-child(4n + 4) { border-left-color: #8e44ef; }
+
+.report-performance .card-header { align-items: center; }
+.report-actions { align-items: center; justify-content: flex-end; }
+.report-actions > .seg { max-width: 100%; }
+.direction-reporting > .grid-2 .card { min-width: 0; }
+.report-adoption .kpi { min-height: 110px; }
+
+@media (max-width: 900px) {
+  .report-period-controls { width: 100%; }
+}
+
+@media (max-width: 760px) {
+  .report-period-controls .field { flex: 1 1 130px; }
+  .report-period-controls .seg { width: 100%; }
+  .report-period-controls .seg button { flex: 1; }
+  .report-actions { justify-content: flex-start; }
+  .report-actions .seg { flex-wrap: wrap; }
+}

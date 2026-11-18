@@ -28,6 +28,7 @@ import Activities from './Activities';
 import LocalAssistant from './LocalAssistant';
 import { Roadmap } from './Workspace';
 import Dashboard from './CrmDashboard';
+import DirectionDashboard from './DirectionDashboard';
 import { ModuleGate, RecordList, RecordDetail } from './Records';
 import QuoteEditor from './QuoteEditor';
 import { Quotes, QuoteDetail } from './Quotes';
@@ -63,6 +64,7 @@ import Governance from './Governance';
 import CommissionPayments from './CommissionPayments';
 import SecurityOverview from './SecurityOverview';
 import SecurityArchives from './SecurityArchives';
+import DirectionReporting from './DirectionReporting';
 
 import { AccountingBalance, FneStatus, PaymentReviews } from './ErpPanels';
 import { can } from './types';
@@ -113,8 +115,9 @@ function Protected() {
 }
 function ProfileHome() {
   const { user } = useAuth();
+  if (user?.role?.code === 'direction_generale') return <DirectionDashboard />;
   if (can(user, 'admin.view')) return <AdministrationWorkspace />;
-  if (can(user, 'opportunities.view') || user?.role?.code === 'direction_generale') return <Dashboard />;
+  if (can(user, 'opportunities.view')) return <Dashboard />;
   return <ServiceWorkspace />;
 }
 function CountSessionRoute() {
@@ -212,6 +215,7 @@ function App() {
             }
           />
           <Route path="indicateurs" element={<Indicators />} />
+          <Route path="reporting" element={<Permission permission="reporting.view"><DirectionReporting /></Permission>} />
           <Route path="performance" element={<Performance />} />
           <Route
             path="commissions/paiements"

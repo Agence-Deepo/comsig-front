@@ -1,0 +1,126 @@
+.direction-dashboard {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.direction-dashboard > .page-header {
+  min-height: 118px;
+  align-items: center;
+  padding: 24px 28px;
+  border: 0;
+  border-radius: var(--r-lg);
+  color: #fff;
+  background: linear-gradient(112deg, #28488f 0%, #1b3268 100%);
+  box-shadow: 0 12px 30px rgb(20 43 94 / 18%);
+}
+
+.direction-dashboard > .page-header h1,
+.direction-dashboard > .page-header .subtitle {
+  color: #fff;
+}
+
+.direction-dashboard > .page-header .eyebrow {
+  color: #c9d8ff;
+}
+
+.direction-dashboard > .page-header .btn-primary {
+  background: #5688ef;
+  border-color: #5688ef;
+}
+
+.direction-service-select {
+  min-width: min(260px, 42vw);
+  margin: 0;
+  color: #fff;
+}
+
+.direction-service-select select {
+  min-height: 40px;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.direction-kpis .kpi {
+  min-height: 102px;
+  border-left: 3px solid #3478ef;
+}
+
+.direction-kpis .kpi:nth-child(4n + 2) { border-left-color: #16a085; }
+.direction-kpis .kpi:nth-child(4n + 3) { border-left-color: #e88710; }
+.direction-kpis .kpi:nth-child(4n + 4) { border-left-color: #8e44ef; }
+
+.direction-company {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.direction-company > .section-title {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.direction-charts > .card,
+.direction-donuts > .card,
+.direction-lower > .card {
+  min-width: 0;
+}
+
+.direction-donuts {
+  align-items: stretch;
+}
+
+.direction-donuts .card-body {
+  min-height: 310px;
+}
+
+.direction-lower .list-item {
+  align-items: center;
+}
+
+.direction-lower .list-item > .spacer {
+  min-width: 0;
+}
+
+.direction-lower .list-item strong {
+  display: block;
+  overflow: hidden;
+  color: var(--text-link, #4387ec);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.direction-avatar {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: #c9d8ff;
+  background: #263b61;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.direction-data-note {
+  margin: 0;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .direction-dashboard > .page-header {
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .direction-dashboard > .page-header .row-wrap {
+    width: 100%;
+  }
+
+  .direction-service-select { min-width: 0; flex: 1; }
+  .direction-donuts .card-body { min-height: 0; }
+}
